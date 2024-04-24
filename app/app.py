@@ -29,11 +29,15 @@ else:
 # Plotting only if dataframe is not empty
 if not df.empty:
     try:
-        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0)
+       
+        # Include the name as hover data
+        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0,
+                               hover_data=["Toner"])  # assuming 'Name' is the column with labels
         fig.update_layout(
             polar=dict(
                 radialaxis=dict(showticklabels=False)  # Hides the radial axis tick labels
-            )
+            ),
+            hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell")
         )
         st.plotly_chart(fig)
     except Exception as e:
