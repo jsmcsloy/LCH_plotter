@@ -32,7 +32,7 @@ else:
 if not df.empty:
     try:
         # Include the Toner as hover data
-        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0,
+        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0, text="Toner",
                                hover_data=df.columns)  # dynamically include all columns in hover data
         fig.update_layout(
             polar=dict(
