@@ -8,7 +8,7 @@ st.title("Simple plotter for LCH values")
 L = st.sidebar.number_input("Enter L value", value=50)
 C = st.sidebar.number_input("Enter C value", value=50)
 H = st.sidebar.number_input("Enter H value", value=180)
-dataN
+
 # Button to add LCH values into a list
 if 'data_list' not in st.session_state:
     st.session_state.data_list = []
@@ -31,11 +31,9 @@ else:
 # Plotting only if dataframe is not empty
 if not df.empty:
     try:
-        # Plot with Toners always visible
+        # Include the Toner as hover data
         fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0,
-                               text="Toner",  # assuming 'Toner' is the column with labels
                                hover_data=df.columns)  # dynamically include all columns in hover data
-        fig.update_traces(textposition='top center')
         fig.update_layout(
             polar=dict(
                 radialaxis=dict(showticklabels=False)  # Hides the radial axis tick labels
