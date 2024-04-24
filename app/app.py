@@ -22,8 +22,8 @@ data_file = st.sidebar.file_uploader("Load in the CSV file...")
 
 if data_file is not None:
     df = pd.read_csv(data_file)
-    if 'Toner' not in df.columns:
-        st.error("CSV must contain a 'Toner' column.")
+    if 'Name' not in df.columns:
+        st.error("CSV must contain a 'Name' column.")
 else:
     # If no file uploaded yet, use accumulated data
     df = pd.DataFrame(st.session_state.data_list)
@@ -31,9 +31,11 @@ else:
 # Plotting only if dataframe is not empty
 if not df.empty:
     try:
-        # Include the Toner as hover data
+        # Plot with names always visible
         fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0,
+                               text="Name",  # assuming 'Name' is the column with labels
                                hover_data=df.columns)  # dynamically include all columns in hover data
+        fig.update_traces(textposition='top center')
         fig.update_layout(
             polar=dict(
                 radialaxis=dict(showticklabels=False)  # Hides the radial axis tick labels
