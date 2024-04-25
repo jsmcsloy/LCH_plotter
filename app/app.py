@@ -8,14 +8,15 @@ st.title("Simple plotter for LCH values")
 L = st.sidebar.number_input("Enter L value", value=50)
 C = st.sidebar.number_input("Enter C value", value=50)
 H = st.sidebar.number_input("Enter H value", value=180)
+ref = st.sidebar.text_input("Enter reference ")
 
 # Button to add LCH values into a list
 if 'data_list' not in st.session_state:
     st.session_state.data_list = []
 
 if st.sidebar.button("Add LCH value"):
-    st.session_state.data_list.append({'L': L, 'C': C, 'H': H})
-    st.sidebar.success("Added: L={}, C={}, H={}".format(L, C, H))
+    st.session_state.data_list.append({'L': L, 'C': C, 'H': H,"Toner": ref})
+    st.sidebar.success("Added: L={}, C={}, H={}".format(L, C, H, ref))
 
 # Load CSV of data points
 data_file = st.sidebar.file_uploader("Load in the CSV file...")
