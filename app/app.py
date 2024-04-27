@@ -4,9 +4,6 @@ import plotly.express as px
 import numpy as np
 from PIL import Image  # Import Image module from PIL library
 
-
-
-
 # Function to convert L*a*b to LCH
 def lab_to_lch(row):
     L, a, b = row['L'], row['a'], row['b']
@@ -15,7 +12,7 @@ def lab_to_lch(row):
     h_deg = np.degrees(h_rad) % 360
     return L, C, h_deg
 
-st.title("Simple plotter for LCH values")
+st.title("Plot Lab or LCH values")
 
 # Sidebar - capture L, C, H and insert into dataframe
 colour_space = st.sidebar.radio("Select Colour Space", ["Lab", "LCH"])
