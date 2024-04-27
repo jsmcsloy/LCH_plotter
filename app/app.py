@@ -77,25 +77,26 @@ if not df.empty:
 
 
         # Include the Toner as hover data
-        fig = px.scatter_polar(df, r="C", theta="H", direction='clockwise', start_angle=-225, text="Toner", height= 600,
+        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", height= 600,
                                hover_data=df.columns, range_r=[0, 100])  # dynamically include all columns in hover data
         
         fig.update_layout ( 
         #make transparent
-        polar_bgcolor = 'rgba(0,0,0,0.1)',
+        polar_bgcolor = 'rgba(0,0,0,0)',
         paper_bgcolor = 'rgba(0,0,0,0)',
        
         # Show or hide the radial axis tick labels based on the checkbox
         polar=dict(
-            radialaxis=dict(showticklabels=show_scale)),
+            radialaxis=dict(showticklabels=show_scale, visible= show_scale)),
             hoverlabel=dict(bgcolor="white", font_size=14, font_family="Rockwell"),
 
         #grab a LCH background image from the web
         images= [dict(
-                    source="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEwJBlL0BSeVPaLCBKFk15vf-LKej1Kvx5yQ&usqp=CAU",
+                    #source="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEwJBlL0BSeVPaLCBKFk15vf-LKej1Kvx5yQ&usqp=CAU",
+                    source="https://iili.io/JUVtZog.png",
                     xref="paper", yref="paper",
-                    x=0.5, y=0.5,
-                    sizex=0.82, sizey=1,
+                    x=0.503, y=0.503,
+                    sizex= 1.0, sizey=1.13,
                     xanchor="center",
                     yanchor="middle",
                     sizing="contain",
