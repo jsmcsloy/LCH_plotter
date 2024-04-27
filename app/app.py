@@ -11,7 +11,7 @@ def lab_to_lch(row):
     h_deg = np.degrees(h_rad) % 360
     return L, C, h_deg
 
-st.title("Simple plotter for LCH or L'*a'*b values")
+st.title("Simple plotter for LCH or Lab values")
 
 # Sidebar - capture L, C, H and insert into dataframe
 colour_space = st.sidebar.radio("Select Colour Space", ["Lab", "LCH"])
