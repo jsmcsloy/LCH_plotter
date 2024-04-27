@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+from PIL import Image  # Import Image module from PIL library
+
+
+img = Image.open("/home/jay/LCH_plotter/app/hsl_top.jpg")
+
 
 # Function to convert L*a*b to LCH
 def lab_to_lch(row):
@@ -11,7 +16,7 @@ def lab_to_lch(row):
     h_deg = np.degrees(h_rad) % 360
     return L, C, h_deg
 
-st.title("Simple plotter for LCH or Lab values")
+st.title("Simple plotter for LCH values")
 
 # Sidebar - capture L, C, H and insert into dataframe
 colour_space = st.sidebar.radio("Select Colour Space", ["Lab", "LCH"])
@@ -62,19 +67,40 @@ show_scale = st.sidebar.checkbox("Show Scale", value=True)
 if not df.empty:
     try:
         # Include the Toner as hover data
-        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0, text="Toner",
+        fig = px.scatter_polar(df, r="C", theta="H", direction='clockwise', start_angle=-225, text="Toner", height= 600,
                                hover_data=df.columns)  # dynamically include all columns in hover data
         fig.update_layout(
-            polar=dict(
-                radialaxis=dict(showticklabels=show_scale)  # Show or hide the radial axis tick labels based on the checkbox
-            ),
-            hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell")
-        )
+        
+        #make transparent
+        polar_bgcolor = 'rgba(0,0,0,0.1)',
+        paper_bgcolor = 'rgba(0,0,0,0)',
+        
+        polar=dict(
+            radialaxis=dict(showticklabels=show_scale)  # Show or hide the radial axis tick labels based on the checkbox
+        ),
+        hoverlabel=dict(bgcolor="white", font_size=14, font_family="Rockwell"),
+
+        #grab a LCH background image from the web
+        images= [dict(
+                    source="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEwJBlL0BSeVPaLCBKFk15vf-LKej1Kvx5yQ&usqp=CAU",
+                    xref="paper", yref="paper",
+                    x=0.5, y=0.5,
+                    sizex=0.82, sizey=1,
+                    xanchor="center",
+                    yanchor="middle",
+                    sizing="stretch",
+                    layer="below")], 
+                    margin=dict(l=50, r=50, t=50, b=50)                   
+                             )
+
+       
 
         fig.update_traces(marker=dict(size=8))
         fig.update_traces(textposition='top left')  # Adjust marker size as needed
+    
 
         st.plotly_chart(fig)
+
     except Exception as e:
         st.error(f"Error generating plot: {e}")
 else:
