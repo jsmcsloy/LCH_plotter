@@ -5,7 +5,6 @@ import numpy as np
 from PIL import Image  # Import Image module from PIL library
 
 
-img = Image.open("/home/jay/LCH_plotter/app/hsl_top.jpg")
 
 
 # Function to convert L*a*b to LCH
