@@ -68,6 +68,7 @@ if not df.empty:
     
     try:
 
+    
         #add a slider to control the background image opacity 
         opacity = st.slider(
         'Select chart background opacity',
