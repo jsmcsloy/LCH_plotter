@@ -34,7 +34,7 @@ else:
 if 'data_list' not in st.session_state:
     st.session_state.data_list = []
 
-if st.sidebar.button("Add LCH value"):
+if st.sidebar.button("Add value"):
     if colour_space == "Lab":
         st.session_state.data_list.append({'L': L, 'C': C, 'H': H, "Toner": ref})
     else:
