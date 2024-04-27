@@ -77,13 +77,15 @@ if not df.empty:
 
 
         # Include the Toner as hover data
-        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", height= 600,
-                               hover_data=df.columns, range_r=[0, 100])  # dynamically include all columns in hover data
+        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", 
+                               hover_data=df.columns, range_r=[0, 132])  # dynamically include all columns in hover data
         
         fig.update_layout ( 
         #make transparent
         polar_bgcolor = 'rgba(0,0,0,0)',
         paper_bgcolor = 'rgba(0,0,0,0)',
+
+       
        
         # Show or hide the radial axis tick labels based on the checkbox
         polar=dict(
