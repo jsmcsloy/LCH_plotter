@@ -55,6 +55,9 @@ else:
     # If no file uploaded yet, use accumulated data
     df = pd.DataFrame(st.session_state.data_list)
 
+# Checkbox to toggle the scale
+show_scale = st.sidebar.checkbox("Show Scale", value=True)
+
 # Plotting only if dataframe is not empty
 if not df.empty:
     try:
@@ -63,7 +66,7 @@ if not df.empty:
                                hover_data=df.columns)  # dynamically include all columns in hover data
         fig.update_layout(
             polar=dict(
-                radialaxis=dict(showticklabels=False)  # Hides the radial axis tick labels
+                radialaxis=dict(showticklabels=show_scale)  # Show or hide the radial axis tick labels based on the checkbox
             ),
             hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell")
         )
