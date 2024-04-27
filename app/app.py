@@ -16,7 +16,7 @@ if 'data_list' not in st.session_state:
 
 if st.sidebar.button("Add LCH value"):
     st.session_state.data_list.append({'L': L, 'C': C, 'H': H,"Toner": ref})
-    st.sidebar.success("Added: L={}, C={}, H={}".format(L, C, H, ref))
+    st.sidebar.success("Added: L={}, C={}, H={}, Ref={}".format(L, C, H, ref))
 
 # Load CSV of data points
 data_file = st.sidebar.file_uploader("Load in the CSV file...")
@@ -41,6 +41,10 @@ if not df.empty:
             ),
             hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell")
         )
+
+        fig.update_traces(marker=dict(size=8))
+        fig.update_traces(textposition='top left')  # Adjust marker size as needed
+
         st.plotly_chart(fig)
     except Exception as e:
         st.error(f"Error generating plot: {e}")
