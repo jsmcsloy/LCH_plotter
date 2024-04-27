@@ -1,44 +1,81 @@
+import streamlit as st 
 import pandas as pd
-import plotly.graph_objects as go
-import streamlit as st
+import plotly.express as px
 import numpy as np
-import matplotlib as mpl
-from colorspacious import cspace_converter
 
-def lch_to_rgb(l, c, h):
-    convert_to_rgb = cspace_converter("CIELCh", "sRGB1")
-    rgb = convert_to_rgb((l, c, h))
-    rgb = [max(0, min(1, x)) for x in rgb]
-    return rgb
+# Function to convert L*a*b to LCH
+def lab_to_lch(row):
+    L, a, b = row['L'], row['a'], row['b']
+    C = np.sqrt(a**2 + b**2)
+    h_rad = np.arctan2(b, a)
+    h_deg = np.degrees(h_rad) % 360
+    return L, C, h_deg
 
-st.title("Trace CSV over HSV Plot")
+st.title("Simple plotter for LCH values")
 
-data = st.sidebar.file_uploader("Load in the CSV file", type=['csv'])
+# Sidebar - capture L, C, H and insert into dataframe
+colour_space = st.sidebar.radio("Select Colour Space", ["Lab", "LCH"])
 
-if data is not None:
-    df = pd.read_csv(data)
-
-    theta = np.linspace(0, 2 * np.pi, 100)
-    r = np.linspace(0, 1, 100)
-    T, R = np.meshgrid(theta, r)
-    X = R * np.cos(T)
-    Y = R * np.sin(T)
-    hsv = np.stack((T/(2 * np.pi), R, np.ones_like(R)), axis=-1)cd ap0
-    rgb = mpl.colors.hsv_to_rgb(hsv)
-
-    rgb_flat = rgb.reshape(-1, 3)
-    fig = go.Figure(data=go.Scatter(x=X.flatten(), y=Y.flatten(), mode='markers',
-                                    marker=dict(color=['rgb({},{},{})'.format(int(r*255), int(g*255), int(b*255)) for r, g, b in rgb_flat],
-                                                size=10, opacity=0.5)))
-
-    for index, row in df.iterrows():
-        rgb = lch_to_rgb(row['L'], row['C'], row['H'])
-        x_position = np.cos(row['H'] % 360 / 360 * 2 * np.pi) * row['C'] / 100
-        y_position = np.sin(row['H'] % 360 / 360 * 2 * np.pi) * row['C'] / 100
-        fig.add_trace(go.Scatter(x=[x_position], y=[y_position], mode='markers+text',
-                                 text=f"L={row['L']}",
-                                 marker=dict(size=12, color='rgb({},{},{})'.format(*[int(v * 255) for v in rgb]))))
-
-    st.plotly_chart(fig)
+if colour_space == "Lab":
+    L = st.sidebar.number_input("Enter L value", value=50)
+    a = st.sidebar.number_input("Enter a value", value=0)
+    b = st.sidebar.number_input("Enter b value", value=0)
+    ref = st.sidebar.text_input("Enter reference ")
+    lab_data = (L, a, b)
+    lch_data = lab_to_lch({'L': L, 'a': a, 'b': b})  # Convert Lab to LCH
+    L, C, H = lch_data
 else:
-    st.write("Please upload a CSV file.")
+    L = st.sidebar.number_input("Enter L value", value=50)
+    C = st.sidebar.number_input("Enter C value", value=50)
+    H = st.sidebar.number_input("Enter H value", value=180)
+    ref = st.sidebar.text_input("Enter reference ")
+
+# Button to add LCH values into a list
+if 'data_list' not in st.session_state:
+    st.session_state.data_list = []
+
+if st.sidebar.button("Add LCH value"):
+    if colour_space == "Lab":
+        st.session_state.data_list.append({'L': L, 'C': C, 'H': H, "Toner": ref})
+    else:
+        st.session_state.data_list.append({'L': L, 'C': C, 'H': H, "Toner": ref})
+    st.sidebar.success("Added: L={}, C={}, H={}, Ref={}".format(L, C, H, ref))
+
+# Load CSV of data points
+data_file = st.sidebar.file_uploader("Load in the CSV file...")
+
+if data_file is not None:
+    df = pd.read_csv(data_file)
+    if 'L' in df.columns and 'a' in df.columns and 'b' in df.columns:
+        # Convert Lab values to LCH
+        df[['L', 'C', 'H']] = df.apply(lab_to_lch, axis=1, result_type='expand')
+    else:
+        st.error("CSV must contain 'L', 'a', and 'b' columns for Lab color space.")
+else:
+    # If no file uploaded yet, use accumulated data
+    df = pd.DataFrame(st.session_state.data_list)
+
+# Checkbox to toggle the scale
+show_scale = st.sidebar.checkbox("Show Scale", value=True)
+
+# Plotting only if dataframe is not empty
+if not df.empty:
+    try:
+        # Include the Toner as hover data
+        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=0, text="Toner",
+                               hover_data=df.columns)  # dynamically include all columns in hover data
+        fig.update_layout(
+            polar=dict(
+                radialaxis=dict(showticklabels=show_scale)  # Show or hide the radial axis tick labels based on the checkbox
+            ),
+            hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell")
+        )
+
+        fig.update_traces(marker=dict(size=8))
+        fig.update_traces(textposition='top left')  # Adjust marker size as needed
+
+        st.plotly_chart(fig)
+    except Exception as e:
+        st.error(f"Error generating plot: {e}")
+else:
+    st.info("Upload data or add LCH values to generate plot.")
