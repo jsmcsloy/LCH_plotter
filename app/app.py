@@ -6,7 +6,7 @@ from PIL import Image  # Import Image module from PIL library
 
 
 # Add a L*a*b  or  LCH value manually to plot on the chatt or upload a cvs file. The csv must have columns L,a,b,Toner
-#
+
 
 # Function to convert L*a*b to LCH
 def lab_to_lch(row):
