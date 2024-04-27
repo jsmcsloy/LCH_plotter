@@ -68,24 +68,23 @@ if not df.empty:
     
     try:
 
-    
+        st.markdown("""---""") 
+        st.write("")
         #add a slider to control the background image opacity 
         opacity = st.slider(
         'Select chart background opacity',
-        0.0, 1.0, (1.0))
+        0.0, 1.0, (1.0)) 
 
 
         # Include the Toner as hover data
         fig = px.scatter_polar(df, r="C", theta="H", direction='clockwise', start_angle=-225, text="Toner", height= 600,
                                hover_data=df.columns, range_r=[0, 100])  # dynamically include all columns in hover data
         
-
-
         fig.update_layout ( 
         #make transparent
         polar_bgcolor = 'rgba(0,0,0,0.1)',
         paper_bgcolor = 'rgba(0,0,0,0)',
-        
+       
         # Show or hide the radial axis tick labels based on the checkbox
         polar=dict(
             radialaxis=dict(showticklabels=show_scale)),
@@ -99,7 +98,7 @@ if not df.empty:
                     sizex=0.82, sizey=1,
                     xanchor="center",
                     yanchor="middle",
-                    sizing="stretch",
+                    sizing="contain",
                     layer="below")], 
                     margin=dict(l=50, r=50, t=50, b=50))
 
@@ -111,6 +110,7 @@ if not df.empty:
         #plot chart on screen
         st.plotly_chart(fig)
 
+            
     except Exception as e:
         st.error(f"Error generating plot: {e}")
 else:
