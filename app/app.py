@@ -76,16 +76,27 @@ if not df.empty:
         0.0, 1.0, (1.0)) 
 
 
-        # Include the Toner as hover data
-        fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", 
-                               hover_data=df.columns, range_r=[0, 132])  # dynamically include all columns in hover data
+        # Check if "source" column is present in the DataFrame
+        if "Source" in df.columns:
+            fig = px.scatter_polar(df, r="C", theta="H", color="Source", direction='counterclockwise', start_angle=-23, text="Toner", height=600,
+                                hover_data=df.columns, range_r=[0, 100])
+        else:
+            fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", height=600,
+                           hover_data=df.columns, range_r=[0, 100])
         
         fig.update_layout ( 
-        #make transparent
+
+        legend=dict(
+        orientation="v",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="center",
+        x=1
+        ),       
+
+       #make transparent
         polar_bgcolor = 'rgba(0,0,0,0)',
         paper_bgcolor = 'rgba(0,0,0,0)',
-
-       
        
         # Show or hide the radial axis tick labels based on the checkbox
         polar=dict(
@@ -109,6 +120,7 @@ if not df.empty:
         fig.update_layout_images(opacity = opacity )
         fig.update_traces(marker=dict(size=8))
         fig.update_traces(textposition='top left')  # Adjust marker size as needed
+    
     
         #plot chart on screen
         st.plotly_chart(fig)
