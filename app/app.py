@@ -101,7 +101,7 @@ if not df.empty:
         # Show or hide the radial axis tick labels based on the checkbox
         polar=dict(
             radialaxis=dict(showticklabels=show_scale, visible= show_scale)),
-            hoverlabel=dict(bgcolor="white", font_size=14, font_family="Rockwell"),
+            hoverlabel=dict(bgcolor="white", font_size=16, font_family="Rockwell"),
 
         #grab a LCH background image from the web
         images= [dict(
@@ -118,7 +118,7 @@ if not df.empty:
 
         #update the image and grid
         fig.update_layout_images(opacity = opacity )
-        fig.update_traces(marker=dict(size=8))
+        fig.update_traces(marker=dict(size=10))
         fig.update_traces(textposition='top left')  # Adjust marker size as needed
     
     
