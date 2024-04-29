@@ -22,17 +22,17 @@ st.title("Simple plotter for LCH or Lab values")
 colour_space = st.sidebar.radio("Select Colour Space", ["Lab", "LCH"])
 
 if colour_space == "Lab":
-    L = st.sidebar.number_input("Enter L value", value=50)
-    a = st.sidebar.number_input("Enter a value", value=0)
-    b = st.sidebar.number_input("Enter b value", value=0)
+    L = st.sidebar.number_input("Enter L value", value=50.00)
+    a = st.sidebar.number_input("Enter a value", value=0.00)
+    b = st.sidebar.number_input("Enter b value", value=0.00)
     ref = st.sidebar.text_input("Enter reference ")
     lab_data = (L, a, b)
     lch_data = lab_to_lch({'L': L, 'a': a, 'b': b})  # Convert Lab to LCH
     L, C, H = lch_data
 else:
-    L = st.sidebar.number_input("Enter L value", value=50)
-    C = st.sidebar.number_input("Enter C value", value=50)
-    H = st.sidebar.number_input("Enter H value", value=180)
+    L = st.sidebar.number_input("Enter L value", value=50.00)
+    C = st.sidebar.number_input("Enter C value", value=50.00)
+    H = st.sidebar.number_input("Enter H value", value=180.00)
     ref = st.sidebar.text_input("Enter reference ")
 
 # Button to add LCH values into a list
@@ -79,10 +79,10 @@ if not df.empty:
         # Check if "source" column is present in the DataFrame
         if "Source" in df.columns:
             fig = px.scatter_polar(df, r="C", theta="H", color="Source", direction='counterclockwise', start_angle=-23, text="Toner", height=600,
-                                hover_data=df.columns, range_r=[0, 100])
+                                hover_data=df.columns, range_r=[0, 120])
         else:
             fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", height=600,
-                           hover_data=df.columns, range_r=[0, 100])
+                           hover_data=df.columns, range_r=[0, 120])
         
         fig.update_layout ( 
 
