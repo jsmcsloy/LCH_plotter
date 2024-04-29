@@ -61,7 +61,7 @@ else:
     df = pd.DataFrame(st.session_state.data_list)
 
 # Checkbox to toggle the scale
-show_scale = st.sidebar.checkbox("Show Scale", value=True)
+show_scale = st.sidebar.checkbox("Show Scale", value=False)
 
 # Plotting only if dataframe is not empty
 if not df.empty:
@@ -78,11 +78,11 @@ if not df.empty:
 
         # Check if "source" column is present in the DataFrame
         if "Source" in df.columns:
-            fig = px.scatter_polar(df, r="C", theta="H", color="Source", direction='counterclockwise', start_angle=-23, text="Toner", height=600,
-                                hover_data=df.columns, range_r=[0, 120])
+            fig = px.scatter_polar(df, r="C", theta="H", color="Source", direction='counterclockwise', start_angle= -23, text="Toner", height=600,
+                                hover_data=df.columns, range_r=[0, 130])
         else:
             fig = px.scatter_polar(df, r="C", theta="H", direction='counterclockwise', start_angle=-23, text="Toner", height=600,
-                           hover_data=df.columns, range_r=[0, 120])
+                           hover_data=df.columns, range_r=[0, 130])
         
         fig.update_layout ( 
 
