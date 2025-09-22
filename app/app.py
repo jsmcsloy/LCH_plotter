@@ -94,7 +94,7 @@ if not show_3d:
                 ),
                 hoverlabel=dict(bgcolor="white", font_size=16, font_family="Rockwell"),
                 images=[dict(
-                    source="https://iili.io/JUVtZog.png",
+                    source= "app/wheel.jpg",    # "https://iili.io/JUVtZog.png"
                     xref="paper", yref="paper",
                     x=0.503, y=0.503,
                     sizex=1.0, sizey=1.13,
